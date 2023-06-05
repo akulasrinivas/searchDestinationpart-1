@@ -6,8 +6,20 @@ import DestinationItem from '../DestinationItem'
 import './index.css'
 
 class DestinationSearch extends Component {
+  state = {searchInput: ' '}
+
+  onChangeSearchInput = event => {
+    this.setState({searchInput: event.target.value})
+  }
+
   render() {
     const {destinationsList} = this.props
+
+    const {searchInput} = this.state
+
+    const searchResults = destinationsList.filter(eachDestination =>
+      eachDestination.name.toLowerCase().includes(searchInput.toLowerCase()),
+    )
 
     return (
       <div className="bg-conatiner">
@@ -16,6 +28,7 @@ class DestinationSearch extends Component {
           <div className="search-input-container">
             <input
               type="search"
+              value={searchInput}
               className="search-input"
               placeholder="search"
               onChange={this.onChangeSearchInput}
@@ -27,7 +40,7 @@ class DestinationSearch extends Component {
             />
           </div>
           <ul className="destinations-list">
-            {destinationsList.map(eachDestination => (
+            {searchResults.map(eachDestination => (
               <DestinationItem
                 destinationDetails={eachDestination}
                 key={eachDestination.id}
